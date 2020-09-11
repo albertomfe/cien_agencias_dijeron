@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>100 Agencias Dijeron</title>
+    <link rel="stylesheet" type="text/css" href="./assets/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/style.css">
+
+  </head>
+  <body>
+
+    <!-- Precarga -->
+    <div class="ui centered grid fullh" id='precarga'>
+      <div class="sixteen wide tablet sixteen wide computer column ">
+          <div class="column">
+              <div class="ui active inverted dimmer">
+                <div class="ui text loader">Cargando</div>
+              </div>
+          </div>
+      </div>
+    </div>
+
+
+
+  <!-- contenedor general del juego -->
+  <div class="ui centered grid" id='contenedor_juego' style='display:none;'>
+
+      <!--
+        Muestra de Puntos Equipo 1
+      -->
+      <div class="four wide tablet four wide computer column teamBlue">
+          <span class='pts_equipo' id='c_pts_eq1'>250</span>
+      </div>
+
+
+      <!--puntuacion de la ronda y asignacion de pts -->
+      <div class="six wide tablet six wide computer column ">
+        <!-- Botones de asignacion-->
+        <div class="ui centered grid" >
+          <div class="sixteen wide tablet  sixteen wide computer column">
+            <div class='div_puntaje_ronda'>
+              <span class='pts_ronda' id='c_pts_ronda'>0</span>
+            </div>
+          </div>
+
+          <div class="eight wide tablet  six wide computer column">
+            <!--Asignar Equipo 1 -->
+            <div class="ui animated fade button w100" tabindex="0">
+              <div class="hidden content">Equipo 1</div>
+              <div class="visible content">
+                <i class="angle left icon"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="eight wide tablet six wide computer column">
+            <!--Asignar Equipo 2 -->
+            <div class="ui animated fade button w100" tabindex="0">
+              <div class="hidden content">Equipo 2</div>
+              <div class="visible content">
+                <i class="angle right icon"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!--
+      Muesta de Pts equipo 2
+      -->
+      <div class="four wide tablet four wide computer column teamRed text-right">
+        <span class='pts_equipo' id='c_pts_eq2'>78</span>
+      </div>
+
+
+
+
+      <!--
+      Panel de Preguntas
+      -->
+      <div class="fourteen wide tablet twelve wide computer column bg-gray">
+
+
+          <!-- panel de respuestas-->
+          <div class="ui centered grid " >
+
+            <div class="sixteen wide tablet sixteen wide computer column ">
+                <span class='text_pregunta' id='label_pregunta'>¿Ejemplo de pregunta?</span>
+            </div>
+
+            <div class="sixteen wide tablet sixteen wide computer column tablero " >
+                <div class="ui centered grid" id='tabla_de_respuestas'>
+
+                </div>
+            </div>
+
+            <!-- Seccion de Errores -->
+            <div class="sixteen wide tablet sixteen wide computer column  pt-3">
+              <div class='text-center' id='div_impresion_errores'>
+                <span class='tacha'><i class="window close icon"></i></span>
+                <span class='tacha'><i class="window close icon"></i></span>
+                <span class='tacha'><i class="window close icon"></i></span>
+              </div>
+            </div>
+
+          </div>
+
+      </div>
+
+
+
+
+      <!--
+      Panel de Control
+      -->
+      <div class="sixteen wide tablet twelve wide computer column " style='text-align:center;'>
+
+          <!--Iniciar Juego -->
+          <a id='b_play'>
+            <div class="ui vertical animated button" tabindex="0">
+              <div class="hidden content">Iniciar</div>
+              <div class="visible content">
+                <i class="play icon"></i>
+              </div>
+            </div>
+          </a>
+
+
+          <!--Anterior Ronda -->
+          <a id='b_backtRond'>
+            <div class="ui vertical animated button" tabindex="0">
+              <div class="hidden content">Anterior</div>
+              <div class="visible content">
+                <i class="angle double left icon"></i>
+              </div>
+            </div>
+          </a>
+
+          <!--Sigiente Ronda -->
+          <a id='b_nextRond'>
+            <div class="ui vertical animated button" tabindex="0">
+              <div class="hidden content">Siguiente</div>
+              <div class="visible content">
+                <i class="angle double right icon"></i>
+              </div>
+            </div>
+          </a>
+
+
+          <!--Terminar el Juego -->
+          <a id='b_endPlay'>
+            <div class="ui vertical animated button" tabindex="0">
+              <div class="hidden content">Terminar</div>
+              <div class="visible content">
+                <i class="plug icon"></i>
+              </div>
+            </div>
+          </a>
+
+      </div><!--Panel de Control -->
+   </div><!--CONTENEDOR DEL JUEGO -->
+
+
+
+
+
+    <!--Scripts -->
+    <script src="./assets/jquery-3.1.1.min.js"></script>
+    <script src="./assets/semantic.min.js"></script>
+    <script src="./assets/js/app.js"></script>
+  </body>
+</html>

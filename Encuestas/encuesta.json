@@ -1,0 +1,31 @@
+[
+  {
+    "ronda1":
+    {
+        "pregunta":"¿Cuales son las Mejores playas de Puerto Vallarta?",
+        "respuestas":
+        [
+            {
+              "respuesta":"Playa las animas",
+              "valor":45
+            },
+            {
+              "respuesta":"Playa colonmitos",
+              "valor":20
+            },
+            {
+              "respuesta":"Playa Yelapa",
+              "valor":17
+            },
+            {
+              "respuesta":"Playa las caletas",
+              "valor":13
+            },
+            {
+              "respuesta":"Playa los muertos",
+              "valor":5
+            }
+        ]
+    }
+  }
+]
