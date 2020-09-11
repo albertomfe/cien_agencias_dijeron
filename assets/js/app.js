@@ -44,6 +44,9 @@ var Game = /** @class */ (function () {
             //tienes que llamar la ronda
             this.get_ronda();
             //this.mostrar_errores(); //lo llamare dentro de get Ronda
+            //REPRODUCIR SONIDO
+            var audio = document.getElementById("sonido_inicio");
+            audio.play();
         } //validacion de localStorage
     };
     Game.prototype.mostrar_errores = function (ronda_actual) {
@@ -114,12 +117,12 @@ var Game = /** @class */ (function () {
             }
             div_respuestas_ocultas += "</div>";
             document.getElementById("tabla_de_respuestas").innerHTML = div_respuestas_ocultas;
-            //document.getElementById("div_impresion_errores").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
             /*FIN CUERPO DE TRABAJO EN EL CAMBIO DE RONDA*/
         })["catch"](function (err) {
             console.log(err);
         });
-    }; //fin de funcion ronda
+    };
+    //fin de funcion ronda
     Game.prototype.ronda_siguiente = function () {
         console.log('siguiente ronda ..');
         //obtener valro de ronda actual
@@ -130,6 +133,9 @@ var Game = /** @class */ (function () {
         localStorage.setItem("puntajes", JSON.stringify(puntajes)); //Actualizar el valor de la Ronda
         this.get_ronda(); //llamar la ronda
         this.crear_puntos_ronda(); //inicializar u Obtener Los Puntos de Ronda
+        //REPRODUCIR SONIDO
+        var audio = document.getElementById("sonido_cambio_ronda");
+        audio.play();
     };
     Game.prototype.ronda_anterior = function () {
         console.log('anterior ronda ..');
@@ -159,6 +165,9 @@ var Game = /** @class */ (function () {
                 this.mostrar_errores(ronda_actual); //llamar la muestra de errores
             }
         }
+        //REPRODUCIR SONIDO
+        var audio = document.getElementById("sonido_error");
+        audio.play();
     };
     Game.prototype.destapar = function (numero, respuesta, valor) {
         //asignar los puntos a la ronda
@@ -170,6 +179,9 @@ var Game = /** @class */ (function () {
         //console.log('Longitud ',longitud);
         document.getElementById("destapar_" + numero).innerHTML = respuesta + valor;
         this.suma_de_ronda(valor);
+        //REPRODUCIR SONIDO
+        var audio = document.getElementById("sonido_destapar");
+        audio.play();
     };
     Game.prototype.suma_de_ronda = function (valor) {
         var puntajes = JSON.parse(localStorage.getItem("puntajes"));
@@ -209,7 +221,7 @@ var Game = /** @class */ (function () {
         localStorage.setItem("puntajes", JSON.stringify(puntajes)); //crear Objeto
     };
     Game.prototype.mostrar_respuestas = function () {
-        console.log('Mostrar Respuestas');
+        //console.log('Mostrar Respuestas');
         var puntajes = JSON.parse(localStorage.getItem("puntajes"));
         var ronda_actual = puntajes[0].ronda; //obtener la ronda actual
         fetch('./Encuestas/encuesta.json', {
@@ -225,7 +237,7 @@ var Game = /** @class */ (function () {
         })
             .then(function (data) {
             document.getElementById("tabla_de_respuestas").innerHTML = "";
-            /*CUERPO DE TRABAJO EN EL CAMBIO DE RONDA*/
+            /*CUERPO*/
             var objeto = JSON.parse(data);
             console.log('data obj = ', objeto);
             console.log('ronda' + ronda_actual);
@@ -243,11 +255,13 @@ var Game = /** @class */ (function () {
                 respuesta = respuesta + objeto[0]['ronda' + ronda_actual].respuestas[i].valor;
                 objeto[0]['ronda' + ronda_actual].respuestas[i].valor;
                 div_respuestas_ocultas += "<div class='respuesta_oculta' id='destapar_" + i + "'>" + respuesta + "</div>";
+                //REPRODUCIR SONIDO
+                var audio = document.getElementById("sonido_destapar");
+                audio.play();
             }
             div_respuestas_ocultas += "</div>";
             document.getElementById("tabla_de_respuestas").innerHTML = div_respuestas_ocultas;
-            //document.getElementById("div_impresion_errores").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
-            /*FIN CUERPO DE TRABAJO EN EL CAMBIO DE RONDA*/
+            /*FIN CUERPO*/
         })["catch"](function (err) {
             console.log(err);
         });
