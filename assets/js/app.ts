@@ -3,11 +3,13 @@
 class Game
 {
     private cargando:boolean;
+    private iniciado:boolean;
 
     constructor()
     {
       console.log('Iniciando Aplicaciòn');
       this.cargando=true;
+      this.iniciado=false;
     }
 
     //Efecto de precarga
@@ -25,14 +27,17 @@ class Game
     /*Finalizar el Juego*/
     public endGame()
     {
-      console.log('finalizando juego ...');
-      //comprobar compatibilidad localStorage
-      if(typeof(Storage)!=="undefined")
+      if(juego.iniciado)//si no a comenzado el juego
       {
-        if(localStorage.getItem("puntajes")){
-            localStorage.removeItem("puntajes");//eliminar variable localstorage
-        }
-      }//local storage validation
+        console.log('finalizando juego ...');
+        //comprobar compatibilidad localStorage
+        if(typeof(Storage)!=="undefined")
+        {
+          if(localStorage.getItem("puntajes")){
+              localStorage.removeItem("puntajes");//eliminar variable localstorage
+          }
+        }//local storage validation
+      }
     }
 
 
@@ -64,35 +69,45 @@ class Game
         //REPRODUCIR SONIDO
         var audio = (<any>document.getElementById("sonido_inicio"));
         audio.play();
+
+
+        //iniciar los botones
+        this.iniciado=true;
+
+        //document.getElementById('btn1').removeAttribute("disabled");
       }//validacion de localStorage
     }
 
 
     public mostrar_errores(ronda_actual)
     {
-
       var puntajes=JSON.parse(localStorage.getItem("puntajes"));
       //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
-      if(!puntajes[0].errores[ronda_actual]){
+      if(!puntajes[0].errores[ronda_actual])
+      {
         //si no existe crearlo
         puntajes[0].errores[ronda_actual]=0;
         localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+        document.getElementById("div_impresion_errores").innerHTML="";
       }
-      else{
+      else
+      {
         //mostrarlo en la div
         var errores=puntajes[0].errores[ronda_actual];
-        if(errores==1){
+        /*if(errores==1){
           document.getElementById("div_impresion_errores").innerHTML="<span class='tacha'><i class='close icon'></i></span>";
+        }*/
+        if(errores==1){
+          document.getElementById("div_impresion_errores").innerHTML="<img class='tache_img' src='./assets/tache.jpg' />";
         }
         if(errores==2){
-          document.getElementById("div_impresion_errores").innerHTML="<span class='tacha'><i class='close icon'></i></span><span class='tacha'><i class='close icon'></i></span>";
+          document.getElementById("div_impresion_errores").innerHTML="<img class='tache_img' src='./assets/tache.jpg' /><img class='tache_img' src='./assets/tache.jpg' />";
         }
         if(errores==3){
-          document.getElementById("div_impresion_errores").innerHTML="<span class='tacha'><i class='close icon'></i></span><span class='tacha'><i class='close icon'></i></span><span class='tacha'><i class='close icon'></i></span>";
+          document.getElementById("div_impresion_errores").innerHTML="<img class='tache_img' src='./assets/tache.jpg' /><img class='tache_img' src='./assets/tache.jpg' /><img class='tache_img' src='./assets/tache.jpg' />";
         }
       }
       //console.log(puntajes);
-
     }
 
 
@@ -143,7 +158,7 @@ class Game
             //div_respuestas_ocultas+=`<input type='text' id='c_num_respuestas_ronda_`+ronda_actual+`' value='`+num_respuestas+`' >`;//lo usare para mostrar lso resultados si no se revealn
             for(let i=0;i<num_respuestas;i++)
             {
-              div_respuestas_ocultas+=`<div class='respuesta_oculta' id='destapar_`+i+`'><a class='manita' onclick="juego.destapar(`+i+`,'`+objeto[0]['ronda'+ronda_actual].respuestas[i].respuesta+`','`+objeto[0]['ronda'+ronda_actual].respuestas[i].valor+`')">...............................</a></div>`;
+              div_respuestas_ocultas+=`<div class='respuesta_oculta' id='destapar_`+i+`'><a class='manita' onclick="juego.destapar(`+i+`,'`+objeto[0]['ronda'+ronda_actual].respuestas[i].respuesta+`','`+objeto[0]['ronda'+ronda_actual].respuestas[i].valor+`')"><span class='indice'>`+(i+1)+`</span>...............................</a></div>`;
             }
             div_respuestas_ocultas+=`</div>`;
             document.getElementById("tabla_de_respuestas").innerHTML =div_respuestas_ocultas;
@@ -155,101 +170,124 @@ class Game
      }
     //fin de funcion ronda
 
-
-
     public ronda_siguiente()
     {
-      console.log('siguiente ronda ..');
-      //obtener valro de ronda actual
-      var puntajes=JSON.parse(localStorage.getItem("puntajes"));//descargar el json en la variable
-      var ronda=puntajes[0].ronda;//obtener la ronda actual
-      ronda++;//incrementar la ronda
-      puntajes[0].ronda=ronda;//asignarle la nueva ronda
-      localStorage.setItem("puntajes",JSON.stringify(puntajes));//Actualizar el valor de la Ronda
-      this.get_ronda();//llamar la ronda
-      this.crear_puntos_ronda();//inicializar u Obtener Los Puntos de Ronda
-      //REPRODUCIR SONIDO
-      var audio = (<any>document.getElementById("sonido_cambio_ronda"));
-      audio.play();
+      if(juego.iniciado)//si no a comenzado el juego
+      {
+        console.log('siguiente ronda ..');
+        //obtener valro de ronda actual
+        var puntajes=JSON.parse(localStorage.getItem("puntajes"));//descargar el json en la variable
+        var ronda=puntajes[0].ronda;//obtener la ronda actual
+        if(ronda<5)
+        {
+          ronda++;//incrementar la ronda
+          puntajes[0].ronda=ronda;//asignarle la nueva ronda
+          localStorage.setItem("puntajes",JSON.stringify(puntajes));//Actualizar el valor de la Ronda
+          this.get_ronda();//llamar la ronda
+          this.crear_puntos_ronda();//inicializar u Obtener Los Puntos de Ronda
+          //REPRODUCIR SONIDO
+          var audio = (<any>document.getElementById("sonido_cambio_ronda"));
+          audio.play();
+
+          //cargar errores de la ronda
+          console.log('siguiente ronda'+ronda);
+          this.mostrar_errores(ronda);//llamar la muestra de errores
+        }//validar avance de rondas
+      }
     }
 
 
     public ronda_anterior()
     {
-      console.log('anterior ronda ..');
-      //obtener valro de ronda actual
-      var puntajes=JSON.parse(localStorage.getItem("puntajes"));//descargar el json en la variable
-      var ronda=puntajes[0].ronda;//obtener la ronda actual
-      ronda--;//incrementar la ronda
-      puntajes[0].ronda=ronda;//asignarle la nueva ronda
-      localStorage.setItem("puntajes",JSON.stringify(puntajes));//Actualizar el valor de la Ronda
-      this.get_ronda();//llamar la ronda
-      this.crear_puntos_ronda();//inicializar u Obtener Los Puntos de Ronda
+      if(juego.iniciado)//si no a comenzado el juego
+      {
+        console.log('anterior ronda ..');
+        //obtener valro de ronda actual
+        var puntajes=JSON.parse(localStorage.getItem("puntajes"));//descargar el json en la variable
+        var ronda=puntajes[0].ronda;//obtener la ronda actual
+        if(ronda>1)
+        {
+          ronda--;//incrementar la ronda
+          puntajes[0].ronda=ronda;//asignarle la nueva ronda
+          localStorage.setItem("puntajes",JSON.stringify(puntajes));//Actualizar el valor de la Ronda
+          this.get_ronda();//llamar la ronda
+          this.crear_puntos_ronda();//inicializar u Obtener Los Puntos de Ronda
+        }
+      }
     }
 
 
     public incrementar_error()
     {
-      var puntajes=JSON.parse(localStorage.getItem("puntajes"));
-      var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
-      //console.log(ronda_actual);
-
-      //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
-      if(!puntajes[0].errores[ronda_actual]){
-        puntajes[0].errores[ronda_actual]++;
-        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
-        this.mostrar_errores(ronda_actual);//llamar la muestra de errores
-      }
-      else
+      if(juego.iniciado)//si no a comenzado el juego
       {
-        if(puntajes[0].errores[ronda_actual]<3){
+        var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+        var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+        //console.log(ronda_actual);
+
+        //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
+        if(!puntajes[0].errores[ronda_actual]){
           puntajes[0].errores[ronda_actual]++;
           localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
           this.mostrar_errores(ronda_actual);//llamar la muestra de errores
         }
+        else
+        {
+          if(puntajes[0].errores[ronda_actual]<3){
+            puntajes[0].errores[ronda_actual]++;
+            localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+            this.mostrar_errores(ronda_actual);//llamar la muestra de errores
+          }
+        }
+        //REPRODUCIR SONIDO
+        var audio = (<any>document.getElementById("sonido_error"));
+        audio.play();
       }
-      //REPRODUCIR SONIDO
-      var audio = (<any>document.getElementById("sonido_error"));
-      audio.play();
     }
 
 
     public destapar(numero,respuesta,valor)
     {
-      //asignar los puntos a la ronda
-      var longitud = respuesta.length;
-      for(let j=longitud;j<=40;j++){
-        respuesta+=".";
-      }
-      respuesta=respuesta.toUpperCase();
-      //console.log('Longitud ',longitud);
+      if(juego.iniciado)//si no a comenzado el juego
+      {
+        //asignar los puntos a la ronda
+        var longitud = respuesta.length;
+        for(let j=longitud;j<=40;j++){
+          respuesta+=".";
+        }
+        respuesta=respuesta.toUpperCase();
+        //console.log('Longitud ',longitud);
 
-      document.getElementById("destapar_"+numero).innerHTML=respuesta+valor;
-      this.suma_de_ronda(valor);
-      //REPRODUCIR SONIDO
-      var audio = (<any>document.getElementById("sonido_destapar"));
-      audio.play();
+        document.getElementById("destapar_"+numero).innerHTML=respuesta+valor;
+        this.suma_de_ronda(valor);
+        //REPRODUCIR SONIDO
+        var audio = (<any>document.getElementById("sonido_destapar"));
+        audio.play();
+      }
     }
 
     public suma_de_ronda(valor)
     {
-      var puntajes=JSON.parse(localStorage.getItem("puntajes"));
-      var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
-      //console.log('ronda',ronda_actual);
-
-      //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
-      if(!puntajes[0].puntaje[ronda_actual]){
-        //si no existe crearlo
-        puntajes[0].puntaje[ronda_actual]=parseInt(valor);
-        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
-      }
-      else
+      if(juego.iniciado)//si no a comenzado el juego
       {
-        puntajes[0].puntaje[ronda_actual]+=parseInt(valor);
-        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+        var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+        var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+        //console.log('ronda',ronda_actual);
+
+        //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
+        if(!puntajes[0].puntaje[ronda_actual]){
+          //si no existe crearlo
+          puntajes[0].puntaje[ronda_actual]=parseInt(valor);
+          localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+        }
+        else
+        {
+          puntajes[0].puntaje[ronda_actual]+=parseInt(valor);
+          localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+        }
+        var puntaje=puntajes[0].puntaje[ronda_actual];
+        (<any>document.getElementById("c_pts_ronda")).value=puntaje;
       }
-      var puntaje=puntajes[0].puntaje[ronda_actual];
-      (<any>document.getElementById("c_pts_ronda")).value=puntaje;
     }
 
     public crear_puntos_ronda()
@@ -266,73 +304,79 @@ class Game
 
     public asignar_puntos(equipo)
     {
-        var puntajes=JSON.parse(localStorage.getItem("puntajes"));
-        var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
-        var puntaje_actual=puntajes[0].puntaje[ronda_actual];
+        if(juego.iniciado)//si no a comenzado el juego
+        {
+          var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+          var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+          var puntaje_actual=puntajes[0].puntaje[ronda_actual];
 
-        puntajes[0]["equipo"+equipo]+=puntaje_actual;
-        (<any>document.getElementById("c_pts_eq"+equipo)).value=puntajes[0]["equipo"+equipo];
-        (<any>document.getElementById("c_pts_ronda")).value=0;
-        puntajes[0].puntaje[ronda_actual]=0;
-        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+          puntajes[0]["equipo"+equipo]+=puntaje_actual;
+          (<any>document.getElementById("c_pts_eq"+equipo)).value=puntajes[0]["equipo"+equipo];
+          (<any>document.getElementById("c_pts_ronda")).value=0;
+          puntajes[0].puntaje[ronda_actual]=0;
+          localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+        }
      }
 
-   public mostrar_respuestas()
-   {
-     //console.log('Mostrar Respuestas');
-     var puntajes=JSON.parse(localStorage.getItem("puntajes"));
-     var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+    public mostrar_respuestas()
+    {
+      if(juego.iniciado)//si no a comenzado el juego
+      {
+         //console.log('Mostrar Respuestas');
+         var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+         var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
 
 
-     fetch('./Encuestas/encuesta.json', {
-        method: 'GET'
-     })
-     .then(function(respuesta)
-     {
-        if(respuesta.ok){
-            return respuesta.text()
-        }
-        else
-        {
-            throw "Error en la llamada Ajax";
-        }
-     })
-     .then(function(data)
-     {
-       document.getElementById("tabla_de_respuestas").innerHTML ="";
-       /*CUERPO*/
-        const objeto=JSON.parse(data);
-        console.log('data obj = ',objeto);
-        console.log('ronda'+ronda_actual);
+         fetch('./Encuestas/encuesta.json', {
+            method: 'GET'
+         })
+         .then(function(respuesta)
+         {
+            if(respuesta.ok){
+                return respuesta.text()
+            }
+            else
+            {
+                throw "Error en la llamada Ajax";
+            }
+         })
+         .then(function(data)
+         {
+           document.getElementById("tabla_de_respuestas").innerHTML ="";
+           /*CUERPO*/
+            const objeto=JSON.parse(data);
+            console.log('data obj = ',objeto);
+            console.log('ronda'+ronda_actual);
 
-        var num_respuestas=objeto[0]['ronda'+ronda_actual].respuestas.length;
-        document.getElementById("label_pregunta").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
+            var num_respuestas=objeto[0]['ronda'+ronda_actual].respuestas.length;
+            document.getElementById("label_pregunta").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
 
-       var div_respuestas_ocultas=`<div class="sixteen wide tablet sixteen wide computer column">`;
-       //div_respuestas_ocultas+=`<input type='text' id='c_num_respuestas_ronda_`+ronda_actual+`' value='`+num_respuestas+`' >`;//lo usare para mostrar lso resultados si no se revealn
-       for(let i=0;i<num_respuestas;i++)
-       {
-         var respuesta=objeto[0]['ronda'+ronda_actual].respuestas[i].respuesta;
-         var longitud = respuesta.length;
-         for(let j=longitud;j<=40;j++){
-           respuesta+=".";
-         }
-         respuesta=respuesta.toUpperCase();
-         respuesta=respuesta+objeto[0]['ronda'+ronda_actual].respuestas[i].valor;
+           var div_respuestas_ocultas=`<div class="sixteen wide tablet sixteen wide computer column">`;
+           //div_respuestas_ocultas+=`<input type='text' id='c_num_respuestas_ronda_`+ronda_actual+`' value='`+num_respuestas+`' >`;//lo usare para mostrar lso resultados si no se revealn
+           for(let i=0;i<num_respuestas;i++)
+           {
+             var respuesta=objeto[0]['ronda'+ronda_actual].respuestas[i].respuesta;
+             var longitud = respuesta.length;
+             for(let j=longitud;j<=40;j++){
+               respuesta+=".";
+             }
+             respuesta=respuesta.toUpperCase();
+             respuesta=respuesta+objeto[0]['ronda'+ronda_actual].respuestas[i].valor;
 
-         objeto[0]['ronda'+ronda_actual].respuestas[i].valor
-         div_respuestas_ocultas+=`<div class='respuesta_oculta' id='destapar_`+i+`'>`+respuesta+`</div>`;
-         //REPRODUCIR SONIDO
-         var audio = (<any>document.getElementById("sonido_destapar"));
-         audio.play();
+             objeto[0]['ronda'+ronda_actual].respuestas[i].valor
+             div_respuestas_ocultas+=`<div class='respuesta_oculta' id='destapar_`+i+`'>`+respuesta+`</div>`;
+             //REPRODUCIR SONIDO
+             var audio = (<any>document.getElementById("sonido_destapar"));
+             audio.play();
+           }
+           div_respuestas_ocultas+=`</div>`;
+           document.getElementById("tabla_de_respuestas").innerHTML =div_respuestas_ocultas;
+            /*FIN CUERPO*/
+         })
+         .catch(function(err){
+            console.log(err);
+         });
        }
-       div_respuestas_ocultas+=`</div>`;
-       document.getElementById("tabla_de_respuestas").innerHTML =div_respuestas_ocultas;
-        /*FIN CUERPO*/
-     })
-     .catch(function(err){
-        console.log(err);
-     });
    }
 
 
