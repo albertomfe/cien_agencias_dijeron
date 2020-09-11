@@ -47,21 +47,51 @@ class Game
         var puntajes=[
         {
           "ronda":1,
-          "errores":[],
+          "errores":[],/*errores x ronda*/
+          "puntaje":[],/*pts x ronda*/
           "equipo1":0,
           "equipo2":0
         }
        ];
+       puntajes[0].errores.push(0);//crear el numero de errores en ronda 0
+       puntajes[0].puntaje.push(0);//crear el numero de errores en ronda 0
        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
        this.imprimir_puntajes();
 
        //tienes que llamar la ronda
        this.get_ronda();
-
+       //this.mostrar_errores(); //lo llamare dentro de get Ronda
 
       }//validacion de localStorage
     }
 
+
+    public mostrar_errores(ronda_actual)
+    {
+
+      var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+      //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
+      if(!puntajes[0].errores[ronda_actual]){
+        //si no existe crearlo
+        puntajes[0].errores[ronda_actual]=0;
+        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+      }
+      else{
+        //mostrarlo en la div
+        var errores=puntajes[0].errores[ronda_actual];
+        if(errores==1){
+          document.getElementById("div_impresion_errores").innerHTML="<span class='tacha'><i class='close icon'></i></span>";
+        }
+        if(errores==2){
+          document.getElementById("div_impresion_errores").innerHTML="<span class='tacha'><i class='close icon'></i></span><span class='tacha'><i class='close icon'></i></span>";
+        }
+        if(errores==3){
+          document.getElementById("div_impresion_errores").innerHTML="<span class='tacha'><i class='close icon'></i></span><span class='tacha'><i class='close icon'></i></span><span class='tacha'><i class='close icon'></i></span>";
+        }
+      }
+      //console.log(puntajes);
+
+    }
 
 
     /*Imprimir Juegos*/
@@ -79,49 +109,49 @@ class Game
       var puntajes=JSON.parse(localStorage.getItem("puntajes"));
       var ronda_actual=puntajes[0].ronda;
       console.log('ronda actual= '+puntajes[0].ronda);
+      this.mostrar_errores(ronda_actual);
+      //mostrarla en el elemento
+      document.getElementById("label_ronda").innerHTML="Ronda "+ronda_actual;
 
-      fetch('./Encuestas/encuesta.json', {
-         method: 'GET'
-      })
-      .then(function(respuesta)
-      {
-         if(respuesta.ok){
-             return respuesta.text()
-         }
-         else
-         {
-             throw "Error en la llamada Ajax";
-         }
-      })
-      .then(function(data)
-      {
-        document.getElementById("tabla_de_respuestas").innerHTML ="";
-        /*CUERPO DE TRABAJO EN EL CAMBIO DE RONDA*/
-         var objeto=JSON.parse(data);
-         console.log('data',objeto);
-         //console.log(objeto[0]['ronda'+ronda_actual]);
-         //console.log(objeto[0]['ronda'+ronda_actual].respuestas);
-         //console.log('tam=',objeto[0]['ronda'+ronda_actual].respuestas.length);
-         //console.log(objeto[0]['ronda'+ronda_actual].respuestas[0].respuesta);
-         //console.log(objeto[0]['ronda'+ronda_actual].respuestas[0].valor);
-
-         var num_respuestas=objeto[0]['ronda'+ronda_actual].respuestas.length;
-         document.getElementById("label_pregunta").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
-
-        var div_respuestas_ocultas=`<div class="sixteen wide tablet sixteen wide computer column">`;
-        for(let i=0;i<num_respuestas;i++)
+        fetch('./Encuestas/encuesta.json', {
+           method: 'GET'
+        })
+        .then(function(respuesta)
         {
-          div_respuestas_ocultas+=`<div class='respuesta_oculta'><a class='manita' onclick="destapar(`+i+`,'`+objeto[0]['ronda'+ronda_actual].respuestas[0].respuesta+`','`+objeto[0]['ronda'+ronda_actual].respuestas[0].valor+`')">...............................</a></div>`;
-        }
-        div_respuestas_ocultas+=`</div>`;
-        document.getElementById("tabla_de_respuestas").innerHTML =div_respuestas_ocultas;
+           if(respuesta.ok){
+               return respuesta.text()
+           }
+           else
+           {
+               throw "Error en la llamada Ajax";
+           }
+        })
+        .then(function(data)
+        {
+          document.getElementById("tabla_de_respuestas").innerHTML ="";
+          /*CUERPO DE TRABAJO EN EL CAMBIO DE RONDA*/
+           const objeto=JSON.parse(data);
+           console.log('data obj = ',objeto);
+           //console.log(objeto[0]['ronda'+ronda_actual]);
+           //console.log(objeto[0]['ronda'+ronda_actual].respuestas);
+           //console.log('tam=',objeto[0]['ronda'+ronda_actual].respuestas.length);
+           //console.log(objeto[0]['ronda'+ronda_actual].respuestas[0].respuesta);
+           //console.log(objeto[0]['ronda'+ronda_actual].respuestas[0].valor);
+           console.log('ronda'+ronda_actual);
 
+           var num_respuestas=objeto[0]['ronda'+ronda_actual].respuestas.length;
+           document.getElementById("label_pregunta").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
 
-        //document.getElementById("div_impresion_errores").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
-
+          var div_respuestas_ocultas=`<div class="sixteen wide tablet sixteen wide computer column">`;
+          //div_respuestas_ocultas+=`<input type='text' id='c_num_respuestas_ronda_`+ronda_actual+`' value='`+num_respuestas+`' >`;//lo usare para mostrar lso resultados si no se revealn
+          for(let i=0;i<num_respuestas;i++)
+          {
+            div_respuestas_ocultas+=`<div class='respuesta_oculta' id='destapar_`+i+`'><a class='manita' onclick="juego.destapar(`+i+`,'`+objeto[0]['ronda'+ronda_actual].respuestas[i].respuesta+`','`+objeto[0]['ronda'+ronda_actual].respuestas[i].valor+`')">...............................</a></div>`;
+          }
+          div_respuestas_ocultas+=`</div>`;
+          document.getElementById("tabla_de_respuestas").innerHTML =div_respuestas_ocultas;
          /*FIN CUERPO DE TRABAJO EN EL CAMBIO DE RONDA*/
-      })
-      .catch(function(err){
+       }).catch(function(err){
          console.log(err);
       });
     }//fin de funcion ronda
@@ -138,6 +168,7 @@ class Game
       puntajes[0].ronda=ronda;//asignarle la nueva ronda
       localStorage.setItem("puntajes",JSON.stringify(puntajes));//Actualizar el valor de la Ronda
       this.get_ronda();//llamar la ronda
+      this.crear_puntos_ronda();//inicializar u Obtener Los Puntos de Ronda
     }
 
 
@@ -151,20 +182,154 @@ class Game
       puntajes[0].ronda=ronda;//asignarle la nueva ronda
       localStorage.setItem("puntajes",JSON.stringify(puntajes));//Actualizar el valor de la Ronda
       this.get_ronda();//llamar la ronda
+      this.crear_puntos_ronda();//inicializar u Obtener Los Puntos de Ronda
     }
 
 
+    public incrementar_error()
+    {
+      var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+      var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+      //console.log(ronda_actual);
+
+      //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
+      if(!puntajes[0].errores[ronda_actual]){
+        puntajes[0].errores[ronda_actual]++;
+        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+        this.mostrar_errores(ronda_actual);//llamar la muestra de errores
+      }
+      else
+      {
+        if(puntajes[0].errores[ronda_actual]<3){
+          puntajes[0].errores[ronda_actual]++;
+          localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+          this.mostrar_errores(ronda_actual);//llamar la muestra de errores
+        }
+      }
+    }
+
+
+    public destapar(numero,respuesta,valor)
+    {
+      //asignar los puntos a la ronda
+      var longitud = respuesta.length;
+      for(let j=longitud;j<=40;j++){
+        respuesta+=".";
+      }
+      respuesta=respuesta.toUpperCase();
+      //console.log('Longitud ',longitud);
+
+      document.getElementById("destapar_"+numero).innerHTML=respuesta+valor;
+      this.suma_de_ronda(valor);
+    }
+
+    public suma_de_ronda(valor)
+    {
+      var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+      var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+      //console.log('ronda',ronda_actual);
+
+      //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
+      if(!puntajes[0].puntaje[ronda_actual]){
+        //si no existe crearlo
+        puntajes[0].puntaje[ronda_actual]=parseInt(valor);
+        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+      }
+      else
+      {
+        puntajes[0].puntaje[ronda_actual]+=parseInt(valor);
+        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+      }
+      var puntaje=puntajes[0].puntaje[ronda_actual];
+      (<any>document.getElementById("c_pts_ronda")).value=puntaje;
+    }
+
+    public crear_puntos_ronda()
+    {
+      var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+      var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+      //console.log('ronda',ronda_actual);
+      if(!puntajes[0].puntaje[ronda_actual]){
+        puntajes[0].puntaje[ronda_actual]=0;
+      }
+      var puntaje=puntajes[0].puntaje[ronda_actual];
+      (<any>document.getElementById("c_pts_ronda")).value=puntaje;
+    }
+
+    public asignar_puntos(equipo)
+    {
+        var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+        var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+        var puntaje_actual=puntajes[0].puntaje[ronda_actual];
+
+        puntajes[0]["equipo"+equipo]+=puntaje_actual;
+        (<any>document.getElementById("c_pts_eq"+equipo)).value=puntajes[0]["equipo"+equipo];
+        (<any>document.getElementById("c_pts_ronda")).value=0;
+        puntajes[0].puntaje[ronda_actual]=0;
+        localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
+     }
+
+   public mostrar_respuestas()
+   {
+     console.log('Mostrar Respuestas');
+     var puntajes=JSON.parse(localStorage.getItem("puntajes"));
+     var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
+
+
+     fetch('./Encuestas/encuesta.json', {
+        method: 'GET'
+     })
+     .then(function(respuesta)
+     {
+        if(respuesta.ok){
+            return respuesta.text()
+        }
+        else
+        {
+            throw "Error en la llamada Ajax";
+        }
+     })
+     .then(function(data)
+     {
+       document.getElementById("tabla_de_respuestas").innerHTML ="";
+       /*CUERPO*/
+        const objeto=JSON.parse(data);
+        console.log('data obj = ',objeto);
+        console.log('ronda'+ronda_actual);
+
+        var num_respuestas=objeto[0]['ronda'+ronda_actual].respuestas.length;
+        document.getElementById("label_pregunta").innerHTML =objeto[0]['ronda'+ronda_actual].pregunta;
+
+       var div_respuestas_ocultas=`<div class="sixteen wide tablet sixteen wide computer column">`;
+       //div_respuestas_ocultas+=`<input type='text' id='c_num_respuestas_ronda_`+ronda_actual+`' value='`+num_respuestas+`' >`;//lo usare para mostrar lso resultados si no se revealn
+       for(let i=0;i<num_respuestas;i++)
+       {
+         var respuesta=objeto[0]['ronda'+ronda_actual].respuestas[i].respuesta;
+         var longitud = respuesta.length;
+         for(let j=longitud;j<=40;j++){
+           respuesta+=".";
+         }
+         respuesta=respuesta.toUpperCase();
+         respuesta=respuesta+objeto[0]['ronda'+ronda_actual].respuestas[i].valor;
+
+         objeto[0]['ronda'+ronda_actual].respuestas[i].valor
+         div_respuestas_ocultas+=`<div class='respuesta_oculta' id='destapar_`+i+`'>`+respuesta+`</div>`;
+       }
+       div_respuestas_ocultas+=`</div>`;
+       document.getElementById("tabla_de_respuestas").innerHTML =div_respuestas_ocultas;
+        /*FIN CUERPO*/
+     })
+     .catch(function(err){
+        console.log(err);
+     });
+   }
 
 
 }//Fin de la Clase
 
 
 
-function destapar(numero,respuesta,valor)
-{
-  console.log('destapar la respuesta #'+numero,respuesta,valor);
 
-}
 
 
 const juego=new Game();
@@ -188,6 +353,27 @@ document.getElementById("b_nextRond").addEventListener("click",function(){
 //ATRAS RONDA
 document.getElementById("b_backtRond").addEventListener("click",function(){
       juego.ronda_anterior();  //call function siguiten ronda
+});
+
+//ASIGNAR EQUIPO 1
+document.getElementById("b_equipo1").addEventListener("click",function(){
+    juego.asignar_puntos(1);
+});
+
+//ASIGNAR EQUIPO 2
+document.getElementById("b_equipo2").addEventListener("click",function(){
+    juego.asignar_puntos(2);
+});
+
+
+//ERROR
+document.getElementById("b_error").addEventListener("click",function(){
+    juego.incrementar_error();
+});
+
+//MOSTRAR
+document.getElementById("b_show").addEventListener("click",function(){
+    juego.mostrar_respuestas();
 });
 
 
