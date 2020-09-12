@@ -21,6 +21,28 @@ var Game = /** @class */ (function () {
             console.log('finalizando juego ...');
             //comprobar compatibilidad localStorage
             if (typeof (Storage) !== "undefined") {
+                document.getElementById("label_pregunta").innerHTML = ""; //limpiar pregunta
+                document.getElementById("div_impresion_errores").innerHTML = ""; //limpiar errores
+                //REPRODUCIR SONIDO
+                var audio = document.getElementById("sonido_ganador");
+                audio.pause();
+                audio.currentTime = 0;
+                audio.play();
+                //DEFINIR EL GANADOR DE LA PARTIDA
+                var pts_ganador = '';
+                var ganador = "<div class=\"sixteen wide tablet sixteen wide computer column fondo_ganador\">";
+                var puntajes = JSON.parse(localStorage.getItem("puntajes"));
+                if (puntajes[0].equipo1 > puntajes[0].equipo2) {
+                    ganador += "<span class='winner'>GANADOR</span><br><br><br><span class='winner'>EQUIPO 1</span>";
+                    pts_ganador = puntajes[0].equipo1;
+                }
+                if (puntajes[0].equipo2 > puntajes[0].equipo1) {
+                    ganador += "<span class='winner'>GANADOR</span><br><br><br><span class='winner'>EQUIPO 2</span>";
+                    pts_ganador = puntajes[0].equipo2;
+                }
+                ganador += "</div>";
+                document.getElementById("tabla_de_respuestas").innerHTML = ganador;
+                document.getElementById("label_ronda").innerHTML = "Resultado " + pts_ganador + " Pts"; //limpiar ronda
                 if (localStorage.getItem("puntajes")) {
                     localStorage.removeItem("puntajes"); //eliminar variable localstorage
                 }
@@ -44,15 +66,23 @@ var Game = /** @class */ (function () {
             puntajes[0].errores.push(0); //crear el numero de errores en ronda 0
             puntajes[0].puntaje.push(0); //crear el numero de errores en ronda 0
             localStorage.setItem("puntajes", JSON.stringify(puntajes)); //crear Objeto
-            this.imprimir_puntajes();
+            //setTimeout(juego.imprimir_puntajes,3000);
+            setTimeout(this.get_ronda, 13000);
+            //this.imprimir_puntajes();
             //tienes que llamar la ronda
-            this.get_ronda();
-            //this.mostrar_errores(); //lo llamare dentro de get Ronda
+            //this.get_ronda();
             //REPRODUCIR SONIDO
             var audio = document.getElementById("sonido_inicio");
             audio.play();
             //iniciar los botones
             this.iniciado = true;
+            //texto de bienvenida
+            var welcome = "<div class=\"sixteen wide tablet sixteen wide computer column fondo_bienvenida\">";
+            welcome += "<span class='texto_welcome'>COMEZEMOS</span><br><br><br><span class='texto_welcome'>A JUGAR</span>";
+            welcome += "<br><img class='logo_carga' src='./assets/logos/flip.gif'/>";
+            welcome += "<br><span class='frase'>Elige Confianza,Elige Imacop</span>";
+            welcome + "</div>";
+            document.getElementById("tabla_de_respuestas").innerHTML = welcome;
             //document.getElementById('btn1').removeAttribute("disabled");
         } //validacion de localStorage
     };
@@ -83,18 +113,12 @@ var Game = /** @class */ (function () {
         }
         //console.log(puntajes);
     };
-    /*Imprimir Juegos*/
-    Game.prototype.imprimir_puntajes = function () {
-        //convertir a objeto
-        var puntajes = JSON.parse(localStorage.getItem("puntajes"));
-        console.log(puntajes);
-    };
     //llamar el numero de ronda
     Game.prototype.get_ronda = function () {
         var puntajes = JSON.parse(localStorage.getItem("puntajes"));
         var ronda_actual = puntajes[0].ronda;
         console.log('ronda actual= ' + puntajes[0].ronda);
-        this.mostrar_errores(ronda_actual);
+        juego.mostrar_errores(ronda_actual);
         //mostrarla en el elemento
         document.getElementById("label_ronda").innerHTML = "Ronda " + ronda_actual;
         fetch('./Encuestas/encuesta.json', {
@@ -210,6 +234,8 @@ var Game = /** @class */ (function () {
             this.suma_de_ronda(valor);
             //REPRODUCIR SONIDO
             var audio = document.getElementById("sonido_destapar");
+            audio.pause();
+            audio.currentTime = 0;
             audio.play();
         }
     };
@@ -295,6 +321,8 @@ var Game = /** @class */ (function () {
                     div_respuestas_ocultas += "<div class='respuesta_oculta' id='destapar_" + i + "'>" + respuesta + "</div>";
                     //REPRODUCIR SONIDO
                     var audio = document.getElementById("sonido_destapar");
+                    audio.pause();
+                    audio.currentTime = 0;
                     audio.play();
                 }
                 div_respuestas_ocultas += "</div>";
