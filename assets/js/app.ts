@@ -105,7 +105,7 @@ class Game
 
         //texto de bienvenida
         let welcome=`<div class="sixteen wide tablet sixteen wide computer column fondo_bienvenida">`;
-        welcome+=`<span class='texto_welcome'>COMEZEMOS</span><br><br><br><span class='texto_welcome'>A JUGAR</span>`;
+        welcome+=`<span class='texto_welcome'>COMECEMOS</span><br><br><br><span class='texto_welcome'>A JUGAR</span>`;
         welcome+=`<br><img class='logo_carga' src='./assets/logos/flip.gif'/>`;
         welcome+=`<br><span class='frase'>Elige Confianza,Elige Imacop</span>`;
         welcome+`</div>`;
@@ -147,8 +147,6 @@ class Game
     }
 
 
-
-
     //llamar el numero de ronda
     public get_ronda()
     {
@@ -156,10 +154,23 @@ class Game
         var ronda_actual=puntajes[0].ronda;
         console.log('ronda actual= '+puntajes[0].ronda);
         juego.mostrar_errores(ronda_actual);
-        //mostrarla en el elemento
-        document.getElementById("label_ronda").innerHTML="Ronda "+ronda_actual;
 
-          fetch('./Encuestas/encuesta.json', {
+        //mostrarla en el elemento
+        if(ronda_actual==3){
+          document.getElementById("label_ronda").innerHTML="Ronda "+ronda_actual+" ,<small>Puntos al Doble</small>";
+        }
+        else if(ronda_actual==4){
+          document.getElementById("label_ronda").innerHTML="Ronda "+ronda_actual+" ,<small>Puntos al Triple</small>";
+        }
+        else{
+          document.getElementById("label_ronda").innerHTML="Ronda "+ronda_actual;
+        }
+
+          //obtener el archivo seleccionado
+          var tema=(<any>document.getElementById('c_tematica')).value;
+          //console.log('tema antes de jalar'+tema);
+          //'./Encuestas/encuesta.json'
+          fetch('./Encuestas/'+tema, {
              method: 'GET'
           })
           .then(function(respuesta){
@@ -253,6 +264,7 @@ class Game
         var puntajes=JSON.parse(localStorage.getItem("puntajes"));
         var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
         //console.log(ronda_actual);
+        juego.show_error_modal();//mostrar le modal de error grande
 
         //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
         if(!puntajes[0].errores[ronda_actual]){
@@ -299,21 +311,41 @@ class Game
 
     public suma_de_ronda(valor)
     {
+
       if(juego.iniciado)//si no a comenzado el juego
       {
         var puntajes=JSON.parse(localStorage.getItem("puntajes"));
         var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
-        //console.log('ronda',ronda_actual);
+        console.log('suma ronda',ronda_actual);
+        valor=parseInt(valor)||0;
 
         //VERIFICAR SI EXISTE LA POSICION DEL ELEMENTO DE LA RONDA
         if(!puntajes[0].puntaje[ronda_actual]){
           //si no existe crearlo
-          puntajes[0].puntaje[ronda_actual]=parseInt(valor);
+          if(ronda_actual==3){   //si es la ronda 3 pts al doble
+            puntajes[0].puntaje[ronda_actual]=(parseInt(valor)*2);
+          }
+          else if(ronda_actual==4){   //si es ronda 4 puntos al triple
+            puntajes[0].puntaje[ronda_actual]=(parseInt(valor)*3);
+          }
+          else{
+            puntajes[0].puntaje[ronda_actual]=valor;
+          }
           localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
         }
         else
         {
-          puntajes[0].puntaje[ronda_actual]+=parseInt(valor);
+          if(ronda_actual==3){   //si es la ronda 3 pts al doble
+            puntajes[0].puntaje[ronda_actual]+=(parseInt(valor)*2);
+          }
+          else if(ronda_actual==4){   //si es ronda 4 puntos al triple
+            puntajes[0].puntaje[ronda_actual]+=(parseInt(valor)*3);
+          }
+          else{
+            puntajes[0].puntaje[ronda_actual]+=valor;
+          }
+
+
           localStorage.setItem("puntajes",JSON.stringify(puntajes));//crear Objeto
         }
         var puntaje=puntajes[0].puntaje[ronda_actual];
@@ -398,7 +430,7 @@ class Game
              div_respuestas_ocultas+=`<div class='respuesta_oculta' id='destapar_`+i+`'>`+respuesta+`</div>`;
              //REPRODUCIR SONIDO
              var audio = (<any>document.getElementById("sonido_destapar"));
-             audio.pause();
+             //audio.pause();
              audio.currentTime = 0;
              audio.play();
            }
@@ -412,6 +444,49 @@ class Game
        }
    }
 
+
+   public startTime()
+   {
+     let tiempo=0;
+     //5 segudos para contestar
+
+       var temporizador=setInterval(() => {
+         if(tiempo<5){
+           tiempo++;
+           console.log(tiempo);
+         }else{
+           console.log('tf=',tiempo);
+           juego.incrementar_error();
+           clearInterval(temporizador);
+         }
+       }, 1000);
+    }
+
+
+    public establecer_tematica(tematica)
+    {
+      //console.log('tema='+tematica);
+      (<any>document.getElementById('c_tematica')).value=tematica;
+      (<any>document.getElementById("b_play")).style.display='block';
+      (<any>document.getElementById("c_pts_eq1")).value='0';
+      (<any>document.getElementById("c_pts_eq2")).value='0';
+      (<any>document.getElementById("c_pts_ronda")).value='0';
+      document.getElementById("label_ronda").innerHTML='';
+    }
+
+
+    public show_error_modal()
+    {
+      var modal = document.getElementById("myModal");
+      modal.style.display = "block";
+      setTimeout(juego.ocultar_error_grande,1000);
+    }
+
+    public ocultar_error_grande()
+    {
+      var modal = document.getElementById("myModal");
+      modal.style.display = "none";
+    }
 
 }//Fin de la Clase
 
@@ -469,3 +544,11 @@ document.getElementById("b_show").addEventListener("click",function(){
 document.getElementById("b_endPlay").addEventListener("click",function(){
   juego.endGame();//call endGame
 });
+
+
+//TEMPORIZADOR
+/*document.getElementById("b_temporizador").addEventListener("click",function(){
+  juego.startTime();//call endGame
+});*/
+
+juego.show_error_modal();
