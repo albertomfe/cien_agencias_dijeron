@@ -389,8 +389,10 @@ class Game
          var puntajes=JSON.parse(localStorage.getItem("puntajes"));
          var ronda_actual=puntajes[0].ronda;//obtener la ronda actual
 
-
-         fetch('./Encuestas/encuesta.json', {
+         var tema=(<any>document.getElementById('c_tematica')).value;
+         //console.log('tema antes de jalar'+tema);
+         //'./Encuestas/encuesta.json'
+         fetch('./Encuestas/'+tema, {      
             method: 'GET'
          })
          .then(function(respuesta)
