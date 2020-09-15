@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>100 Agencias Dijeron</title>
     <link rel="stylesheet" type="text/css" href="./assets/semantic.min.css">
-    <link rel="stylesheet" type="text/css" href="./assets/style.css">
-
+    <link rel="stylesheet" type="text/css" href="./assets/style.min.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/icons/favicon.ico">
   </head>
   <body>
 
@@ -21,57 +21,131 @@
     </div>
 
 
+  <button type='button' onclick="openNav()" class='btn-menu' name='b_menu' id='b_menu'><i class="tasks icon"></i></button>
+  <div id="mySidenav" class="sidenav">
+      <input type='hidden' id='c_tematica' />
+      <br />
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <hr />
+
+
+
+      <div class="ui list">
+        <div class="item">
+          <i class="folder icon"></i>
+          <div class="content">
+            <div class="header">Temas</div>
+            <div class="description">Selecciona la tematica del Juego</div>
+            <div class="list">
+              <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                  <div class="header">Destinos</div>
+                  <div class="description">
+                    <br />
+                    <a href="javascript:void(0)" onclick="juego.establecer_tematica('etapa1.json')"> <i class="caret right icon"></i> Etapa 1</a>
+                    <br />
+                    <br />
+                    <a href="javascript:void(0)" onclick="juego.establecer_tematica('etapa2.json')"> <i class="caret right icon"></i> Etapa 2</a>
+                    <br />
+                    <br />
+                    <a href="javascript:void(0)" onclick="juego.establecer_tematica('etapa3.json')"> <i class="caret right icon"></i> Etapa 3</a>
+                    <br />
+                    <br />
+                    <a href="javascript:void(0)" onclick="juego.establecer_tematica('etapa5.json')"> <i class="caret right icon"></i> Etapa 5</a>
+                    <br />
+                    <br />
+                    <a href="javascript:void(0)" onclick="juego.establecer_tematica('etapa6.json')"> <i class="caret right icon"></i> Etapa 6</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div><!--fin lista -->
+
+      <center>
+        <!--Iniciar Juego -->
+        <a id='b_play' style='display:none;'>
+          <div class="ui vertical animated green button" tabindex="0">
+            <div class="hidden content">Iniciar</div>
+            <div class="visible content">
+              <i class="play icon"></i>
+            </div>
+          </div>
+        </a>
+      </center>
+
+  </div>
+  <!--MENU LATERAL -->
 
   <!-- contenedor general del juego -->
   <div class="ui centered grid" id='contenedor_juego' style='display:none;'>
+
+
+      <!--MODAL DE ERROR -->
+      <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+          <img class='tache_img_grande' src='./assets/tache.jpg' />
+        </div>
+      </div>
+
 
       <!--
         Muestra de Puntos Equipo 1
       -->
       <div class="four wide tablet four wide computer column teamBlue">
-          <span class='pts_equipo' id='c_pts_eq1'>250</span>
+          <input readonly='readonly' disabled type='text' class='pts_equipo' id='c_pts_eq1' value='0'></input>
+          <a id='b_equipo1'>
+            <div class="eight wide tablet  six wide computer column">
+              <!--Asignar Equipo 1 -->
+              <div class="ui animated fade black button w100" tabindex="0">
+                <div class="hidden content">Equipo 1</div>
+                <div class="visible content">
+                  <i class="angle left icon"></i>
+                </div>
+              </div>
+            </div>
+          </a>
       </div>
 
 
       <!--puntuacion de la ronda y asignacion de pts -->
-      <div class="six wide tablet six wide computer column ">
+      <div class="six wide tablet six wide computer column " style='padding:0px;'>
         <!-- Botones de asignacion-->
         <div class="ui centered grid" >
           <div class="sixteen wide tablet  sixteen wide computer column">
+            <div class="sixteen wide tablet fourteen wide computer column ">
+              <center>
+                <img class='logo_presentacion' src='./assets/logos/logo.png' />
+              </center>
+              <div style="height: 60px; overflow: hidden;" ><svg viewBox="0 0 500 150" preserveAspectRatio="none" style="height: 100%; width: 100%;"><path d="M-74.21,186.02 C218.68,40.95 282.44,41.94 515.52,157.39 L500.00,150.00 L-38.09,168.25 Z" style="stroke: none; fill: #295094;"></path></svg></div>
+            </div>
             <div class='div_puntaje_ronda'>
-              <span class='pts_ronda' id='c_pts_ronda'>0</span>
-            </div>
-          </div>
-
-          <div class="eight wide tablet  six wide computer column">
-            <!--Asignar Equipo 1 -->
-            <div class="ui animated fade button w100" tabindex="0">
-              <div class="hidden content">Equipo 1</div>
-              <div class="visible content">
-                <i class="angle left icon"></i>
-              </div>
-            </div>
-          </div>
-
-          <div class="eight wide tablet six wide computer column">
-            <!--Asignar Equipo 2 -->
-            <div class="ui animated fade button w100" tabindex="0">
-              <div class="hidden content">Equipo 2</div>
-              <div class="visible content">
-                <i class="angle right icon"></i>
-              </div>
+              <input readonly='readonly' disabled type='text' class='pts_ronda' id='c_pts_ronda' value='0'></input>
             </div>
           </div>
         </div>
       </div>
 
 
-
       <!--
       Muesta de Pts equipo 2
       -->
       <div class="four wide tablet four wide computer column teamRed text-right">
-        <span class='pts_equipo' id='c_pts_eq2'>78</span>
+        <input readonly='readonly' disabled type='text' class='pts_equipo' id='c_pts_eq2' value='0'></input>
+        <a id='b_equipo2'>
+          <div class="eight wide tablet six wide computer column">
+            <!--Asignar Equipo 2 -->
+            <div class="ui animated fade black button w100" tabindex="0">
+              <div class="hidden content">Equipo 2</div>
+              <div class="visible content">
+                <i class="angle right icon"></i>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
 
 
@@ -82,12 +156,11 @@
       -->
       <div class="fourteen wide tablet twelve wide computer column bg-gray">
 
-
           <!-- panel de respuestas-->
-          <div class="ui centered grid " >
+          <div class="ui centered grid" style='margin-top:0px; margin-bottom:0px;'>
 
-            <div class="sixteen wide tablet sixteen wide computer column ">
-                <span class='text_pregunta' id='label_pregunta'>¿Ejemplo de pregunta?</span>
+            <div class="sixteen wide tablet sixteen wide computer column" >
+                <span class='text_pregunta' id='label_pregunta'></span>
             </div>
 
             <div class="sixteen wide tablet sixteen wide computer column tablero " >
@@ -97,11 +170,12 @@
             </div>
 
             <!-- Seccion de Errores -->
-            <div class="sixteen wide tablet sixteen wide computer column  pt-3">
+            <div class="eight wide tablet eight wide computer column ">
+              <span class='text_ronda' id='label_ronda'></span><!--Mostrar el Numero de Ronda  -->
+            </div>
+            <div class="eight wide tablet eighteight wide computer column ">
               <div class='text-center' id='div_impresion_errores'>
-                <span class='tacha'><i class="window close icon"></i></span>
-                <span class='tacha'><i class="window close icon"></i></span>
-                <span class='tacha'><i class="window close icon"></i></span>
+               <!--Aqui se muestran los Errores -->
               </div>
             </div>
 
@@ -117,20 +191,14 @@
       -->
       <div class="sixteen wide tablet twelve wide computer column " style='text-align:center;'>
 
-          <!--Iniciar Juego -->
-          <a id='b_play'>
-            <div class="ui vertical animated button" tabindex="0">
-              <div class="hidden content">Iniciar</div>
-              <div class="visible content">
-                <i class="play icon"></i>
-              </div>
-            </div>
-          </a>
+
+
+
 
 
           <!--Anterior Ronda -->
-          <a id='b_backtRond'>
-            <div class="ui vertical animated button" tabindex="0">
+          <a id='b_backtRond' >
+            <div class="ui vertical animated black button" tabindex="0">
               <div class="hidden content">Anterior</div>
               <div class="visible content">
                 <i class="angle double left icon"></i>
@@ -139,8 +207,8 @@
           </a>
 
           <!--Sigiente Ronda -->
-          <a id='b_nextRond'>
-            <div class="ui vertical animated button" tabindex="0">
+          <a id='b_nextRond' >
+            <div class="ui vertical animated black button" tabindex="0">
               <div class="hidden content">Siguiente</div>
               <div class="visible content">
                 <i class="angle double right icon"></i>
@@ -149,9 +217,41 @@
           </a>
 
 
+          <!--Temporizador -->
+          <!--<a id='b_temporizador' >
+            <div class="ui vertical animated black button" tabindex="0">
+              <div class="hidden content">Tiempo</div>
+              <div class="visible content">
+                <i class="clock right icon"></i>
+              </div>
+            </div>
+          </a>-->
+
+
+          <!--Error -->
+          <a id='b_error' >
+            <div class="ui vertical animated black button" tabindex="0">
+              <div class="hidden content">Error</div>
+              <div class="visible content">
+                <i class="close icon"></i>
+              </div>
+            </div>
+          </a>
+
+          <!--Mostrar Respuestas -->
+          <a id='b_show' >
+            <div class="ui vertical animated black button" tabindex="0">
+              <div class="hidden content">Mostrar</div>
+              <div class="visible content">
+                <i class="eye icon"></i>
+              </div>
+            </div>
+          </a>
+
+
           <!--Terminar el Juego -->
-          <a id='b_endPlay'>
-            <div class="ui vertical animated button" tabindex="0">
+          <a id='b_endPlay' >
+            <div class="ui vertical animated red button" tabindex="0">
               <div class="hidden content">Terminar</div>
               <div class="visible content">
                 <i class="plug icon"></i>
@@ -159,16 +259,51 @@
             </div>
           </a>
 
+
       </div><!--Panel de Control -->
    </div><!--CONTENEDOR DEL JUEGO -->
 
 
 
 
+   <!--AUDIO GAMES -->
+   <!--Inicio -->
+   <audio id="sonido_inicio" controls>
+       <source type="audio/wav" src="./Sonidos/inicio.wav">
+   </audio>
+   <!--Cambio de Ronda -->
+   <audio id="sonido_cambio_ronda" controls>
+       <source type="audio/wav" src="./Sonidos/cambio_ronda.wav">
+   </audio>
+   <!--Error -->
+   <audio id="sonido_error" controls>
+       <source type="audio/wav" src="./Sonidos/error.wav">
+   </audio>
+   <!--Destapar -->
+   <audio id="sonido_destapar" controls>
+       <source type="audio/wav" src="./Sonidos/destapar.wav">
+   </audio>
+   <!--Ganador -->
+   <audio id="sonido_ganador" controls>
+       <source type="audio/wav" src="./Sonidos/ganador.mp3">
+   </audio>
+
 
     <!--Scripts -->
     <script src="./assets/jquery-3.1.1.min.js"></script>
     <script src="./assets/semantic.min.js"></script>
-    <script src="./assets/js/app.js"></script>
+    <script src="./assets/js/app.min.js"></script>
+    <script>
+
+      function openNav() {
+        document.getElementById("mySidenav").style.width = "250px";
+      }
+
+      function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+      }
+
+
+    </script>
   </body>
 </html>

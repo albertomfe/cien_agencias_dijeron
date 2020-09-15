@@ -26,6 +26,82 @@
               "valor":5
             }
         ]
+    },
+    "ronda2":
+    {
+        "pregunta":"¿Animales acuatico en que te gustaria Rencargnar?",
+        "respuestas":
+        [
+            {
+              "respuesta":"Delfin",
+              "valor":145
+            },
+            {
+              "respuesta":"Tuburon",
+              "valor":120
+            },
+            {
+              "respuesta":"Ballena",
+              "valor":77
+            },
+            {
+              "respuesta":"Caballo de Mar",
+              "valor":44
+            },
+            {
+              "respuesta":"Estrella de Mar",
+              "valor":5
+            }
+        ]
+    },
+	"ronda3":
+    {
+        "pregunta":"¿Cuales son las comidas tipicas de Guadalajara?",
+        "respuestas":
+        [
+            {
+              "respuesta":"Torta Ahogadas",
+              "valor":65
+            },
+            {
+              "respuesta":"Pozole",
+              "valor":20
+            },
+            {
+              "respuesta":"Carne en su jugo",
+              "valor":10
+            }
+        ]
+    },
+	"ronda4":
+    {
+        "pregunta":"¿Cada cuanto tiempo compra la gente un libro?",
+        "respuestas":
+        [
+            {
+              "respuesta":"1 año",
+              "valor":80
+            },
+            {
+              "respuesta":"6 meses",
+              "valor":25
+            },
+            {
+              "respuesta":"1 semana",
+              "valor":10
+            }
+        ]
+    },
+	"ronda5":
+    {
+        "pregunta":"¿Cuál es la capital de Venezuela?",
+        "respuestas":
+        [
+            {
+              "respuesta":"Caracas",
+              "valor":100
+            }
+        ]
     }
   }
 ]

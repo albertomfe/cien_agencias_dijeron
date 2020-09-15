@@ -1,0 +1,27 @@
+[
+	{
+		"ronda1":
+		{
+			"pregunta":"Estado más grande de la República Mexicana",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Chihuahua",
+				  "valor":50
+				}
+			]
+		},
+		"ronda2":
+		{
+			"pregunta":"Océano más grande del Mundo",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Pacífico",
+				  "valor":30
+				}
+			]
+		}
+	
+	}
+]

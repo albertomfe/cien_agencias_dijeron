@@ -1,0 +1,113 @@
+[
+	{
+		"ronda1":
+		{
+			"pregunta":"¿Destino de playa más vendido en México?",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Cancún y Riviera Maya",
+				  "valor":25
+				},
+				{
+				  "respuesta":"Puerto Vallarta",
+				  "valor":15
+				},
+				{
+				  "respuesta":"Riviera Nayarit",
+				  "valor":12
+				},
+				{
+				  "respuesta":"Ixtapa",
+				  "valor":8
+				},
+				{
+				  "respuesta":"Mazatlán",
+				  "valor":5
+				}
+			]
+		},
+		"ronda2":
+		{
+			"pregunta":"Hotel con el mejor entretenimiento nocturno",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Xcaret",
+				  "valor":26
+				},
+				{
+				  "respuesta":"TRS",
+				  "valor":12
+				},
+				{
+				  "respuesta":"Riu",
+				  "valor":10
+				},
+				{
+				  "respuesta":"Decameron",
+				  "valor":9
+				},
+				{
+				  "respuesta":"Oasis",
+				  "valor":7
+				}
+			]
+		},
+		"ronda3":
+		{
+			"pregunta":"Cosas más embarazosas que pasan en un hotel de playa",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Enseñar de más",
+				  "valor":27
+				},
+				{
+				  "respuesta":"Malacopear",
+				  "valor":16
+				},
+				{
+				  "respuesta":"Resbalón",
+				  "valor":13
+				},
+				{
+				  "respuesta":"Que la mucama abra la puerta sin tocar",
+				  "valor":10
+				},
+				{
+				  "respuesta":"Cachado robando algo del hotel",
+				  "valor":5
+				}
+			]
+		},
+		"ronda4":
+		{
+			"pregunta":"Especialidad más común de restaurantes de hoteles todo incluído",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Italiana",
+				  "valor":24
+				},
+				{
+				  "respuesta":"Mexicana",
+				  "valor":15
+				},
+				{
+				  "respuesta":"Japonés",
+				  "valor":13
+				},
+				{
+				  "respuesta":"Cortes",
+				  "valor":8
+				},
+				{
+				  "respuesta":"Mariscos",
+				  "valor":7
+				}
+			]
+		}
+	
+	}
+]

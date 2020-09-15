@@ -1,0 +1,59 @@
+[
+	{
+		"ronda1":
+		{
+			"pregunta":"Bebida alcohólica que más se pide en hoteles todo incluido",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Cerveza",
+				  "valor":28
+				},
+				{
+				  "respuesta":"Michelada",
+				  "valor":23
+				},
+				{
+				  "respuesta":"Piña Colada",
+				  "valor":16
+				},
+				{
+				  "respuesta":"Margarita",
+				  "valor":8
+				},
+				{
+				  "respuesta":"Mojito",
+				  "valor":6
+				}
+			]
+		},
+		"ronda2":
+		{
+			"pregunta":"¿De qué Hotel te gustaría una CORTESÍA?",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Hotel Xcaret México",
+				  "valor":23
+				},
+				{
+				  "respuesta":"Riu",
+				  "valor":13
+				},
+				{
+				  "respuesta":"Grand Velas",
+				  "valor":11
+				},
+				{
+				  "respuesta":"TRS Palladium",
+				  "valor":9
+				},
+				{
+				  "respuesta":"Palace",
+				  "valor":7
+				}
+			]
+		}
+	
+	}
+]
