@@ -1,0 +1,59 @@
+[
+	{
+		"ronda1":
+		{
+			"pregunta":"¿Cosas que no pueden faltar en tu maleta de viaje?",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Productos de Higiene",
+				  "valor":19
+				},
+				{
+				  "respuesta":"Bloqueador",
+				  "valor":15
+				},
+				{
+				  "respuesta":"Chanclas",
+				  "valor":13
+				},
+				{
+				  "respuesta":"Traje de Baño",
+				  "valor":11
+				},
+				{
+				  "respuesta":"Suéter o Chamarra",
+				  "valor":6
+				}
+			]
+		},
+		"ronda2":
+		{
+			"pregunta":"Si ganaste una cortesía a un hotel de playa, ¿A quién te llevarías?",
+			"respuestas":
+			[
+				{
+				  "respuesta":"Tu esposo(a)/novio(a)",
+				  "valor":26
+				},
+				{
+				  "respuesta":"Amante",
+				  "valor":17
+				},
+				{
+				  "respuesta":"Mamá/Papá",
+				  "valor":13
+				},
+				{
+				  "respuesta":"Hijos(as)",
+				  "valor":11
+				},
+				{
+				  "respuesta":"Amigo(a)",
+				  "valor":8
+				}
+			]
+		}
+		
+	}
+]
